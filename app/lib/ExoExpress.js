@@ -49,7 +49,7 @@ function ExoExpress(opts) {
 			page = '/index';
 		}
 		var path = baseDir + htmlDir + page + '.htm';
-		console.log("Serving HTML page: " + path);
+		//console.log("Serving HTML page: " + path);
 		res.render(path, function(err, html) {
 			if(err) {
 				//The file doesn't exist - proceed

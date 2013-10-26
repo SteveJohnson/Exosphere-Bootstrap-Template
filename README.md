@@ -21,13 +21,21 @@ Anything that ```looks like this``` is a command you should run in your console 
 - When you want to stop your app, press (Control and C at the same time) ```Ctrl-C```
 
 
-### Getting Started ( ###
+### A Simple Static Website (with Pretty URLs!) ###
+
+- [EJS](http://embeddedjs.com/) was already installed with ```npm install``` (as well as included within the node_modules directory). Check out the package.json file to understand dependencies
+- Launch the app: ```node app/prettyurls.js```
+- [See it in action! (http://localhost:3000)](http://localhost:3000)
+- [See it in action! (http://localhost/login:3000)](http://localhost/login:3000)
+- When you want to stop your app, press (Control and C at the same time) ```Ctrl-C```
+
+
+### User Authentication and Storage with MongoDB ###
 
 - [MongoDB](http://www.mongodb.org/) was already installed with ```npm install``` (as well as included within the node_modules directory). Check out the package.json file to understand dependencies
 - Launch the app: ```node app/mongodb.js```
 - [See it in action! (http://localhost:3000)](http://localhost:3000)
 - When you want to stop your app, press (Control and C at the same time) ```Ctrl-C```
-
 
 ### Extras! ###
 
