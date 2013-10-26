@@ -37,8 +37,13 @@ function MyForeverMonitor(scriptName) {
 		forever.startServer(monitor);
 	});
 	
-	console.log("Forever launched '" + scriptName + "'");
-	console.log("Forever is watching '" + watchDirectory + "'");
+	monitor.on('error', function(err) {
+		console.log("Error: " + err);
+	});
+
+	monitor.on('exit', function() {
+		console.log("Child has terminated");
+	});
 
 	monitor.on('stdout', function(data) {
 		if(typeof data == 'string') {
@@ -50,6 +55,9 @@ function MyForeverMonitor(scriptName) {
 			console.log("ERROR: " + data);
 		}
 	});
+	
+	console.log("Forever launched '" + scriptName + "'");
+	console.log("Forever is watching '" + watchDirectory + "'");
 
 	return false;
 }
