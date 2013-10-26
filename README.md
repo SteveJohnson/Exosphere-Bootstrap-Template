@@ -25,8 +25,8 @@ Anything that ```looks like this``` is a command you should run in your console 
 
 - [EJS](http://embeddedjs.com/) was already installed with ```npm install``` (as well as included within the node_modules directory). Check out the package.json file to understand dependencies
 - Launch the app: ```node app/prettyurls.js```
-- [See it in action! (http://localhost:3000)](http://localhost:3000)
-- [See it in action! (http://localhost/login:3000)](http://localhost/login:3000)
+- [See it in action! (http://localhost)](http://localhost)
+- [See it in action! (http://localhost/login)](http://localhost/login)
 - When you want to stop your app, press (Control and C at the same time) ```Ctrl-C```
 
 
@@ -34,7 +34,7 @@ Anything that ```looks like this``` is a command you should run in your console 
 
 - [MongoDB](http://www.mongodb.org/) was already installed with ```npm install``` (as well as included within the node_modules directory). Check out the package.json file to understand dependencies
 - Launch the app: ```node app/mongodb.js```
-- [See it in action! (http://localhost:3000)](http://localhost:3000)
+- [See it in action! (http://localhost)](http://localhost)
 - When you want to stop your app, press (Control and C at the same time) ```Ctrl-C```
 
 ### Extras! ###

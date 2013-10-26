@@ -17,7 +17,23 @@ var app = require('./lib/ExoExpress.js')({
 
 
 
-// Run our server on port 3000 (http is 80, https is 443)
-app.listen(3000);
-console.log("Listening on port 3000");
+// Run our server on port 80 (http is 80, https is 443)
+app.listen(80);
+console.log("Listening on port 80");
 
+
+
+
+
+
+
+
+// catch the uncaught errors that weren't wrapped in a domain or try catch statement
+// do not use this in modules, but only in applications, as otherwise we could have multiple of these bound
+process.on('uncaughtException', function(err) {
+	// handle the error safely
+	forever.stop(scriptName);
+	console.log("--ERROR-- UncaughtException: " + JSON.stringify(err));
+	console.log(err.stack);
+	console.log("Stopping forever process with pid: " + monitor.child.pid);
+});
