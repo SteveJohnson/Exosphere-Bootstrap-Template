@@ -11,7 +11,10 @@ app.get('/', function(req, res){
 });
 
 // All other requests look in the "html" folder for the file
-app.use(express.static(__dirname + '/html'));
+staticAssetsDir = __dirname + '/../';
+app.use(express.static(staticAssetsDir));
+console.log("Serving static requests from " + staticAssetsDir);
 
 // Run our server on port 3000 (http is 80, https is 443)
 app.listen(3000);
+console.log("Listening on port 3000");
