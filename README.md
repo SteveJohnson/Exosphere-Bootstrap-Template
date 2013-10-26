@@ -33,7 +33,7 @@ Anything that ```looks like this``` is a command you should run in your console 
 
 - Launch your app in the background ```node app/simple.js &```
 - See all the running node processes ```node_modules/forever/bin/forever list```
-- Install Forever globally so you can type ```forever list``` by running ```npm install -g forever```
+- Install Forever globally so you can type ```forever list``` by running ```sudo npm install -g forever```
 
 
 ### Troubleshooting ###

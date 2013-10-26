@@ -22,6 +22,7 @@ function MyForeverMonitor(scriptName) {
 
 	var watchDirectory = __dirname + '/../';
 	var monitor = forever.start(scriptName, {
+		max: 10, //Prevents the runaway error issue
 		watch: true,
 		watchDirectory: watchDirectory,
 		watchIgnoreDotFiles: '.foreverignore',
@@ -42,7 +43,7 @@ function MyForeverMonitor(scriptName) {
 	});
 
 	monitor.on('exit', function() {
-		console.log("Child has terminated");
+		console.log("Node app '" + scriptName + "' has terminated abnormally");
 	});
 
 	monitor.on('stdout', function(data) {
