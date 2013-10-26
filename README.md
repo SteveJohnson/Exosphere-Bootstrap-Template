@@ -28,6 +28,18 @@ Anything that ```looks like this``` is a command you should run in your console 
 - [See it in action! (http://localhost:3000)](http://localhost:3000)
 - When you want to stop your app, press (Control and C at the same time) ```Ctrl-C```
 
+
+### Extras! ###
+
+- Launch your app in the background ```node app/simple.js &```
+- See all the running node processes ```node_modules/forever/bin/forever list```
+- Install Forever globally so you can type ```forever list``` by running ```npm install -g forever```
+
+
+### Troubleshooting ###
+- If you are on OSX and get an error like: "(libuv) Failed to create kqueue (24)" when running ```node_modules/forever/bin/forever list```, run this command ```ulimit -n 8192```. That will increase the number of open files your system allows
+
+
 ### Additional Notes ###
 
 - lib/bootstrap is a Git submodule of https://github.com/twbs/bootstrap
