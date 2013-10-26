@@ -1,6 +1,7 @@
 
 // Programmatically make sure we're always running using Forever
-if(!require('./MyForeverMonitor.js')(__filename)) { return; }
+var child = require('./lib/ExoForever.js')(__filename);
+if(child) { return; }
 
 // Load the "express" module
 var express = require("express");

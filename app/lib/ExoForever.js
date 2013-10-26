@@ -2,30 +2,34 @@
 /*
 * Keeps a script running by using Forever programmatically
 *
-* Usage: if(!require('./MyForeverMonitor.js')(__filename)) { return; }
+* Usage: if(!require('./ExoForever.js')(__filename)) { return; }
 *
 * More notes: http://zoomq.qiniudn.com/ZQScrapBook/ZqFLOSS/data/20120327190237/
 *
 */
 
-function MyForeverMonitor(scriptName) {
+function ExoForever(scriptName) {
 
-	// If we haven't been passed an argument 'direct_launch', abort
+	var appDir = __dirname.substring(0, __dirname.lastIndexOf('/') - 1);
+	var baseDir = appDir.substring(0, appDir.lastIndexOf('/'));
+	var prettyScriptName = scriptName.substring(scriptName.lastIndexOf('/')+1);
+	var prettyDirName = __dirname.substring(__dirname.lastIndexOf('/')+1);
+
+	// If we have been passed an argument 'direct_launch', then Forever is good to go!
 	if(process.argv.length > 2 && process.argv[2] == 'direct_launch') {
 		console.log("");
-		console.log("---------- Executing app at " + scriptName.substring(scriptName.lastIndexOf('/')+1) + "----------");
+		console.log("---------- Executing app at " + prettyScriptName + "----------");
 		console.log("");
-		return true;
+		return false;
 	}
 
 	var forever = require('forever');
 
-	var watchDirectory = __dirname + '/../';
 	var monitor = forever.start(scriptName, {
 		max: 10, //Prevents the runaway error issue
 		watch: true,
-		watchDirectory: watchDirectory,
-		watchIgnoreDotFiles: '.foreverignore',
+		watchDirectory: baseDir,
+		watchIgnoreDotFiles: baseDir + '.foreverignore',
 		//logFile: 'logs/forever.log',
 		//outFile: 'logs/output.log',
 		//errFile: 'logs/error.log',	
@@ -57,10 +61,10 @@ function MyForeverMonitor(scriptName) {
 		}
 	});
 	
-	console.log("Forever launched '" + scriptName + "'");
-	console.log("Forever is watching '" + watchDirectory + "'");
+	console.log("Forever launched '" + prettyScriptName + "'");
+	console.log("Forever is watching '" + prettyDirName + "'");
 
-	return false;
+	return monitor;
 }
 
-module.exports = MyForeverMonitor;
+module.exports = ExoForever;
