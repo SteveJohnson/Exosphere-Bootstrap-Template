@@ -9,6 +9,7 @@ A starter template using Twitter Bootstrap
 Run the following commands in your console (Terminal on OSX)
 
 - Check out this project: 
+
 ```git clone https://github.com/SteveJohnson/Exosphere-Bootstrap-Template```
 - Go into the project directory: ```cd Exosphere-Bootstrap-Template```
 - Install any required node modules as detailed in the package.json file ```npm install```
