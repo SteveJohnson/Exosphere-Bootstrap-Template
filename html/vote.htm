@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<body>
-
-<div id="heatmapArea"/>
+<body style='overflow:hidden'>
 
 <script src="../assets/js/jquery.min.js"></script>
 <script src="../assets/js/heatmap.js"></script>
@@ -24,7 +22,8 @@ var heatmap = null;
 $(function() {
 
 	// Extend the heatmap element to full size of the browser window
-	var heatmapEl = $("#heatmapArea");
+	var heatmapEl = $("<div id='heatmapArea'></div>");
+	$('body').append(heatmapEl);
 	heatmapEl.css('width', $(document).width());
 	heatmapEl.css('height', $(document).height());
     
@@ -81,7 +80,7 @@ $(function() {
     };
   
   	// Add datapoint entries when the mouse moves
-    heatmapEl.bind('mousemove', function(e) {
+    heatmapEl.mousemove(function(e) {
     	cursor.current = new Point(e.pageX, e.pageY);
     	//console.log('mousemove: ' + JSON.stringify(cursor));
     	
@@ -89,6 +88,13 @@ $(function() {
     		isSampling = true;
     		storeCursorSample();
     	}
+    });
+    
+    // Add a secret corner for enabling the heatmap --- oOooOooo
+    $('body').append($("<div id='toggleHeatmap' style='width:200px;height:200px;position:fixed;bottom:0px;right:0px'></div>"));
+    $('#toggleHeatmap').css('z-index', $('canvas', heatmapEl).css('z-index')+1)
+	$('#toggleHeatmap').click(function() {
+	    heatmap.toggleDisplay();
     });
 });
 </script>
