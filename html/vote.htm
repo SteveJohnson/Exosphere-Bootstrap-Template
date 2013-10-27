@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+<div id="heatmapArea"/>
+
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/heatmap.js"></script>
+<script type="text/javascript">
+
+// Create a Point class and a wrapper cursor variable for cleaner code
+function Point(x, y) {
+	this.x = x;
+	this.y = y;
+};
+var cursor = {
+	current: null,
+	lastSample: null
+};
+var isSampling = false;
+var heatmap = null;
+
+// Execute this closure once the DOM is loaded
+$(function() {
+
+	// Extend the heatmap element to full size of the browser window
+	var heatmapEl = $("#heatmapArea");
+	heatmapEl.css('width', $(document).width());
+	heatmapEl.css('height', $(document).height());
+    
+    // Create a Heatmap
+    heatmap = h337.create({
+        element: heatmapEl[0],
+        radius: 20,
+        opacity: 30,
+        max: 100,
+        visible: false,
+        gradient: { 
+        	0.45: "rgb(0,0,255)", 
+        	0.55: "rgb(0,255,255)", 
+        	0.65: "rgb(0,255,0)", 
+        	0.95: "yellow", 
+        	1.0: "rgb(255,0,0)"
+    	}
+    });
+    
+    // Dynamically modify our sample rate and submit the data
+    var sampleRate = 100;
+    var SAMPLE_RATE_STEP = 15;
+    var MIN_SAMPLE_RATE = 30;
+    var MAX_SAMPLE_RATE = 200;
+    var storeCursorSample = function() {
+
+        // Dynamically adjust our sample rate so so we don't over sample idle users
+        var dist = cursor.lastSample == null ? 0 : 
+			Math.sqrt(
+				Math.pow(cursor.current.x - cursor.lastSample.x, 2) +
+				Math.pow(cursor.current.y - cursor.lastSample.y, 2)
+			)
+		;
+        cursor.lastSample = cursor.current;
+        
+        var logDist = dist;
+        if(logDist == Infinity || logDist == -Infinity) {
+        	logDist = 0;
+        }
+        sampleRate = Math.max(MIN_SAMPLE_RATE, Math.min(sampleRate + SAMPLE_RATE_STEP - logDist, MAX_SAMPLE_RATE));
+        //console.log(sampleRate);
+
+		// Add the point to the visual heatmap if the user isn't idling
+		if(sampleRate != MAX_SAMPLE_RATE) {
+	    	heatmap.store.addDataPoint(
+				cursor.current.x, 
+				cursor.current.y, 
+				1
+			);
+		}
+        
+        // And queue up our subsequent sampling
+    	setTimeout(storeCursorSample, sampleRate);
+    };
+  
+  	// Add datapoint entries when the mouse moves
+    heatmapEl.bind('mousemove', function(e) {
+    	cursor.current = new Point(e.pageX, e.pageY);
+    	//console.log('mousemove: ' + JSON.stringify(cursor));
+    	
+    	if(!isSampling) {
+    		isSampling = true;
+    		storeCursorSample();
+    	}
+    });
+});
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>

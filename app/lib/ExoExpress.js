@@ -63,6 +63,7 @@ function ExoExpress(opts) {
 		});
 	});
 	
+	// Override the app.listen() function to provide a helpful error message if possible
 	(function() {
 		var oldAppListen = app.listen;
 		app.listen = errorAwareAppListen;
