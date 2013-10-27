@@ -1,11 +1,11 @@
 
 // Programmatically make sure we're always running using Forever
-var forever = new (require('./lib/ExoForever.js'))();
-if(!forever.isThisContextValid(__filename)) { return; }
+if(!require('./lib/ExoForever.js')()) {
+	return;
+}
 
 // Get an app object with niceties like logging and static asset handling built in
 var app = require('./lib/ExoExpress.js')({
-	baseDir: __dirname.substring(0, __dirname.lastIndexOf('/')),
 	assetsDir: 'assets',
 	htmlDir: 'html'
 });

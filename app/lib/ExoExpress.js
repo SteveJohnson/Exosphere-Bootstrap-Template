@@ -1,7 +1,9 @@
 
 function ExoExpress(opts) {
 
-	var baseDir = opts.baseDir;
+	var scriptName = process.mainModule.filename;
+	var appDir = scriptName.substring(0, scriptName.lastIndexOf('/'));
+	var baseDir = appDir.substring(0, appDir.lastIndexOf('/'));
 	var assetsDir = (opts.assetsDir.indexOf('/') != 0 ? '/' : '') + opts.assetsDir;
 	var htmlDir = (opts.htmlDir.indexOf('/') != 0 ? '/' : '') + opts.htmlDir;
 	var verbose = opts.verbose || false;
