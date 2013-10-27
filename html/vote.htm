@@ -8,15 +8,26 @@
 <script type="text/javascript">
 
 // Connect to the server
-io = io.connect()
+var socket = io.connect()
 
 // Tell the server we're ready
-io.emit('ready')
+socket.emit('ready')
 
-// Listen for the announce event.
-io.on('announce', function(data) {
-    console.log(data);
-})
+// Listen for the announce event from other clients
+socket.on('announce', function(data) {
+	console.log(data);
+});
+
+// Listen for mousemove event from other clients
+socket.on('mousemove', function (point) {
+	// Draw the other client's mousemove on our local heatmap
+	heatmap.store.addDataPoint(
+		point.x, 
+		point.y, 
+		1
+	);
+	console.log(point);
+});
 
 // Create a Point class and a wrapper cursor variable for cleaner code
 function Point(x, y) {
@@ -80,11 +91,16 @@ $(function() {
 
 		// Add the point to the visual heatmap if the user isn't idling
 		if(sampleRate != MAX_SAMPLE_RATE) {
+	    	
+	    	// Draw immediately on our local heatmap
 	    	heatmap.store.addDataPoint(
 				cursor.current.x, 
 				cursor.current.y, 
 				1
 			);
+			
+			// Tell the server (who will tell other clients) about our mousemove!
+			socket.emit('mousemove', cursor.current);
 		}
         
         // And queue up our subsequent sampling

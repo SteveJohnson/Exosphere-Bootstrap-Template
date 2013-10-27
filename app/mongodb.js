@@ -16,14 +16,20 @@ var app = require('./lib/ExoExpress.js')({
 app.io.route('ready', function(req) {
 
 	req.session.ip = req.handshake.address.address;
+	req.session.roomName = 'voting';
 	console.log("Received ready event from " + req.session.ip);
 
-	var roomName = 'voting';
-    req.io.join(roomName);
-    req.io.room(req.data).broadcast('announce', {
-        message: 'New client with ip ' + req.session.ip + ' in the ' + roomName + ' room. '
+    req.io.join(req.session.roomName);
+    req.io.room(req.session.roomName).broadcast('announce', {
+        message: 'New client with ip ' + req.session.ip + ' in the ' + req.session.roomName + ' room. '
     })
-})
+});
+
+// Tell everyone else when the mouse moves!
+app.io.route('mousemove', function(req) {
+	console.log("Received mousemove event from " + req.session.ip + " with data " + JSON.stringify(req.data));
+    req.io.room(req.session.roomName).broadcast('mousemove', req.data)
+});
 
 
 // Start our server on port 80 (http is 80, https is 443)
