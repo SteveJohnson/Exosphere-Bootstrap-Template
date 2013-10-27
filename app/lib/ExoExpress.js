@@ -9,6 +9,7 @@ function ExoExpress(opts) {
 	var verbose = opts.verbose || false;
 
 	var prettyBaseDir = baseDir.substring(baseDir.lastIndexOf('/')+1);
+	var prettyScriptName = scriptName.substring(scriptName.lastIndexOf('/')+1);
 
 	// Load the "express" module
 	var express = require("express");
@@ -61,6 +62,28 @@ function ExoExpress(opts) {
 			}
 		});
 	});
+	
+	(function() {
+		var oldAppListen = app.listen;
+		app.listen = errorAwareAppListen;
+		function errorAwareAppListen() {
+			var server = oldAppListen.apply(app, arguments); // Use #apply in case `init` uses `this`
+			server.on('error', function(err) {
+				if(err.code == 'EACCES') {
+					console.error("******************************************");
+					console.error("ERROR: Insufficient permissions");
+					console.error("Try running the app as an administrator");
+					console.error("eg. sudo " + process.argv[0].substring(process.argv[0].lastIndexOf('/')+1) + ' ' + scriptName.replace(baseDir+'/',''));
+					console.error("******************************************");
+					process.exit(-1);
+				}else {
+					console.error(err);
+				}
+			});
+			return server;
+		}
+	})();
+	
 	
 	console.log("Serving asset requests from folder '" + prettyBaseDir + assetsDir + "'");
 	

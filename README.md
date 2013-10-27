@@ -45,7 +45,7 @@ Anything that ```looks like this``` is a command you should run in your console 
 
 
 ### Troubleshooting ###
-- If you are on OSX and get an error like: "(libuv) Failed to create kqueue (24)" when running ```node_modules/forever/bin/forever list```, run this command ```ulimit -n 8192```. That will increase the number of open files your system allows
+- If you are on OSX and get an error like: "(libuv) Failed to create kqueue (24)" when running ```node_modules/forever/bin/forever list```, run this command ```ulimit -n 2048```. That will increase the number of open files your system allows
 
 
 ### Additional Notes ###

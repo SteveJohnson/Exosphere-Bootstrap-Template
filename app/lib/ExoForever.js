@@ -28,14 +28,13 @@ function ExoForever() {
 				
 		// If we have been passed the argument indicating we're ready, then Forever is good to go!
 		if(process.argv.length > 2 && process.argv[2] == ON_READY_LAUNCH_ARG) {		
-			console.log("");
-			console.log("---------- Executing app at " + me.prettyScriptName + "----------");
+			console.log("----------------- Executing app " + me.prettyScriptName + "-----------------");
 			return true;
 		}else {
 			console.log("Spawning a Forever process to monitor '" + me.prettyScriptName + "'...");
 			me.launchForeverProcess(function(monitor) {
-				console.log("Forever process monitoring app '" + me.prettyScriptName + "' spawned successfully");
-				console.log("Forever is watching directory '" + me.prettyDirName + "' for changes");
+				console.log("ExoForever: Monitored Node app '" + me.prettyScriptName + "' spawned successfully");
+				console.log("ExoForever: Watching directory '" + me.prettyDirName + "' for changes");
 				process.emit('quit');			
 			});
 			return false;
@@ -45,7 +44,7 @@ function ExoForever() {
 	this.launchForeverProcess = function(callback) {
 	
 		this.monitor = forever.start(this.scriptName, {
-			max: 10, //Prevents the runaway error issue
+			max: 3, //Prevents the runaway error issue
 			watch: true,
 			watchDirectory: this.baseDir,
 			watchIgnoreDotFiles: this.baseDir + '.foreverignore',
@@ -68,10 +67,17 @@ function ExoForever() {
 		this.monitor.on('error', function(err) {
 			console.error(err);
 		});
-
-		this.monitor.on('exit', function() {
-			console.log("ExoForever: Node app '" + me.prettyScriptName + "' has terminated abnormally");
+		
+		this.monitor.on('exit:code', function (code, signal) {
+			if(code && code == 255) {
+				//-1/255 is our "code" for terminate ExoForever
+				console.log("ExoForever: Node app '" + me.prettyScriptName + "' requested termination from ExoForever with exit code="+code);		
+				me.cleanup();			
+			}else {
+				console.log("ExoForever: Node app '" + me.prettyScriptName + "' terminated with code=" + code + ", signal=" + signal);		
+			}
 		});
+
 
 		this.monitor.on('stdout', function(data) {
 			if(typeof data == 'string') {
@@ -81,19 +87,21 @@ function ExoForever() {
 		
 		this.monitor.on('stderr', function(data) {
 			if(typeof data == 'string') {
-				console.error(data);
+				console.error("ERROR: " + data);
 			}
 		});		
 	};
 	
-	this.getAllProcesses = function(callback) {
-		forever.list(false, function(err, processes) {
-			if(err) {
-				console.error("Failed on forever.list: " + err);
-				callback([]);
-			}
-			callback(processes);
-		});
+	this.cleanup = function() {
+		// Kill the monitored app process
+		console.log("ExoForever: Terminating Node app '" + me.prettyScriptName + "'");		
+		me.monitor.emit('exit');
+						
+		// Kill this Forever process
+		console.log("ExoForever: Terminating ExoForever monitoring process");		
+		console.log("--------------------------------------------------------------");
+		
+		process.exit(1);
 	};
 
 	this.initUncaughtExceptionHandler = function() {
@@ -104,22 +112,7 @@ function ExoForever() {
 			console.error("UncaughtException: " + JSON.stringify(err));
 			console.error(err.stack);
 			
-			me.getAllProcesses(function(processes) {
-				if(processes) {
-					console.log("--- Forever process list ---");
-					console.log(processes);
-					console.log("----------------------------");
-					console.log("Stopping app process with uid: " + me.monitor.uid);
-					forever.stop(me.monitor.uid);	
-				}else {
-					console.log("No reported app processes running (likely because the app crashed on startup)");
-				}		
-				me.monitor.emit('exit');
-								
-				// Kill this Forever process
-				console.log("Terminating ExoForever monitoring process");
-				process.exit(1);
-			});
+			me.cleanup();
 		});
 	};
 }
