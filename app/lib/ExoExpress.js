@@ -7,15 +7,25 @@ function ExoExpress(opts) {
 	var assetsDir = (opts.assetsDir.indexOf('/') != 0 ? '/' : '') + opts.assetsDir;
 	var htmlDir = (opts.htmlDir.indexOf('/') != 0 ? '/' : '') + opts.htmlDir;
 	var verbose = opts.verbose || false;
+	var enableSocketIO = opts.enableSocketIO || false;
 
 	var prettyBaseDir = baseDir.substring(baseDir.lastIndexOf('/')+1);
 	var prettyScriptName = scriptName.substring(scriptName.lastIndexOf('/')+1);
 
 	// Load the "express" module
-	var express = require("express");
+	var express = require("express.io");
 
 	// Get an instance of express to build our app with
 	var app = express();
+	
+	// Enable Socket.IO if required
+	if(enableSocketIO) {
+		app.http().io();
+	}
+	
+	// Start session support
+	app.use(express.cookieParser())
+	app.use(express.session({secret: 'Exosphere'}))
 
 	// Register the .htm suffix to be rendered by EJS
 	app.engine('htm', require('ejs').renderFile);

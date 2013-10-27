@@ -2,9 +2,21 @@
 <html lang="en">
 <body style='overflow:hidden'>
 
-<script src="../assets/js/jquery.min.js"></script>
-<script src="../assets/js/heatmap.js"></script>
+<script src="/assets/bootstrap/js/jquery.min.js"></script>
+<script src="/assets/bootstrap/js/heatmap.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
+
+// Connect to the server
+io = io.connect()
+
+// Tell the server we're ready
+io.emit('ready')
+
+// Listen for the announce event.
+io.on('announce', function(data) {
+    console.log(data);
+})
 
 // Create a Point class and a wrapper cursor variable for cleaner code
 function Point(x, y) {
