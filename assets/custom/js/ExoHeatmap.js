@@ -18,7 +18,7 @@ function ExoHeatmap(opts) {
 	this._init = function() {
 
 		// Extend the heatmap element to full size of the browser window
-		var heatmapEl = $("<div id='heatmapArea'></div>");
+		var heatmapEl = $("<div id='heatmapArea' style='position:absolute;top:0px;left:0px;'></div>");
 		$('body').append(heatmapEl);
 		heatmapEl.css('width', $(document).width());
 		heatmapEl.css('height', $(document).height());
