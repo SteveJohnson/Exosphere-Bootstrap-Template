@@ -70,11 +70,15 @@ function ExoForever() {
 		
 		this.monitor.on('exit:code', function (code, signal) {
 			if(code && code == 255) {
-				//-1/255 is our "code" for terminate ExoForever
+				// -1/255 is our "code" for terminate ExoForever
 				console.log("ExoForever: Node app '" + me.prettyScriptName + "' requested termination from ExoForever with exit code="+code);		
 				me.cleanup();			
 			}else {
-				console.log("ExoForever: Node app '" + me.prettyScriptName + "' terminated with code=" + code + ", signal=" + signal);		
+				if(signal == 'SIGKILL') {
+					// Terminated by Forever - this is normal operation
+				}else {
+					console.log("ExoForever: Node app '" + me.prettyScriptName + "' was terminated with code=" + code + ", signal=" + signal);			
+				}
 			}
 		});
 

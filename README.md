@@ -9,12 +9,15 @@ Anything that ```looks like this``` is a command you should run in your console 
 
 - Check out this repo: ```git clone https://github.com/SteveJohnson/Exosphere-Bootstrap-Template```
 - Go into the repo directory: ```cd Exosphere-Bootstrap-Template```
-- Install any required node modules as detailed in the package.json file 
-([Forever](https://github.com/nodejitsu/forever), 
-[Express](http://expressjs.com/), 
-[MongoDB](http://www.mongodb.org/),
-[Monk](https://github.com/LearnBoost/monk)) 
-```npm install```
+- Install any required node modules as detailed in the package.json file
+
+  - ([Forever](https://github.com/nodejitsu/forever), 
+  - [Express.Io](https://github.com/techpines/express.io) (a combination of [Express](http://expressjs.com/) and [Socket.Io](https://github.com/LearnBoost/socket.io), 
+  - [MongoDB](http://www.mongodb.org/),
+  - [Monk](https://github.com/LearnBoost/monk)) 
+
+   ```npm install```
+
 - Launch the app: ```node app/simple.js```
 - [See it in action! (http://localhost:3000)](http://localhost:3000)
 - [See it in action! (http://localhost:3000/html/index.htm)](http://localhost:3000/html/index.htm)
