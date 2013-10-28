@@ -95,11 +95,20 @@ function ExoHeatmap(opts) {
 		$('body').children().not(heatmapEl).css('z-index', $('canvas', heatmapEl).css('z-index')+1);
 		$('#toggleHeatmap').click(function() {
 			heatmap.toggleDisplay();
+			if(opts.toggleDislayCallback) {
+				opts.toggleDislayCallback(heatmap.get('visible'));
+			}
 		});
 	};
 	
-	this.getElement = function() {
-		return heatmapEl;
+	this.setVisible = function(visible) {
+		if(heatmap.get('visible') != visible) {
+			heatmap.toggleDisplay();
+		}
+	};
+	
+	this.setData = function(data) {
+		heatmap.store.setDataSet(data);
 	};
 	
 	this.addPoint = function(point) {

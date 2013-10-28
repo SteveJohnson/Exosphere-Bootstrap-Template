@@ -40,6 +40,7 @@ Anything that ```looks like this``` is a command you should run in your console 
 - [See it in action! (http://localhost/vote)](http://localhost/vote)
 - When you want to stop your app, press (Control and C at the same time) ```Ctrl-C```
 
+
 ### Extras! ###
 
 - Launch your app in the background ```node app/simple.js &```

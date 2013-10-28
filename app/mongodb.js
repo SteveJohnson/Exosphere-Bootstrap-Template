@@ -24,37 +24,19 @@ var votesCollection = db.get('votes');
 var mousemovesCollection = db.get('mousemoves');
 var hoversCollection = db.get('hovers');
 
-// DEBUG - uncomment to erase your database
-/*
-votesCollection.drop(function(err) {
-	if(err) console.error(err)
+// Log when someone connects
+app.io.on('connection', function(socket) {
+	var connection = socket.manager.handshaken[socket.id];
+	connection.session.ip = connection.address.address;
+	connection.session.roomName = 'voting';
+	console.log(connection.session.ip + " connected");
+	console.log("There are now " + Object.size(socket.namespace.sockets) + " clients connected");
 });
-mousemovesCollection.drop(function(err) {
-	if(err) console.error(err)
-});
-hoversCollection.drop(function(err) {
-	if(err) console.error(err)
-});
-*/
 
-// Make sure Mongo adds indexes on fields to make our queries faster
-votesCollection.index('session.ip', { unique: true }, function(err) {
-	if(err) console.error(err)
-});
-votesCollection.index('option', { unique: true }, function(err) {
-	if(err) console.error(err)
-});
-mousemovesCollection.index('timestamp', function(err) {
-	if(err) console.error(err)
-});
-mousemovesCollection.index('session.id timestamp', function(err) {
-	if(err) console.error(err)
-});
-mousemovesCollection.index('session.ip timestamp', function(err) {
-	if(err) console.error(err)
-});
-hoversCollection.index('option', function(err) {
-	if(err) console.error(err)
+// Log when someone disconnects
+app.io.route('disconnect', function(req) {
+	console.log(req.session.ip + " disconnected");
+	console.log("There are now " + Object.size(req.socket.namespace.sockets) + " clients connected");
 });
 
 // Setup the ready route, join room and broadcast to room.
@@ -69,7 +51,7 @@ app.io.route('ready', function(req) {
 // Tell everyone else when the mouse moves!
 app.io.route('mousemove', function(req) {
 	//console.log("Received mousemove event from " + req.session.ip + " with data " + JSON.stringify(req.data));
-    req.io.room(req.session.roomName).broadcast('mousemove', req.data)
+    req.io.room(req.session.roomName).broadcast('heatmap:mousemove', req.data.point)
     
     // Save the event to Mongo
     mousemovesCollection.insert({ 
@@ -149,19 +131,37 @@ app.io.route('mouseleave', function(req) {
 	});
 });
 
-// Log when someone connects
-app.io.on('connection', function(socket) {
-	var connection = socket.manager.handshaken[socket.id];
-	connection.session.ip = connection.address.address;
-	connection.session.roomName = 'voting';
-	console.log(connection.session.ip + " connected");
-	console.log("There are now " + Object.size(socket.namespace.sockets) + " clients connected");
-});
-
-// Log when someone disconnects
-app.io.route('disconnect', function(req) {
-	console.log(req.session.ip + " disconnected");
-	console.log("There are now " + Object.size(req.socket.namespace.sockets) + " clients connected");
+// Tell everyone to change their heatmap display status
+app.io.route('heatmap:visible', function(req) {
+	console.log("Received heatmap:visible event from " + req.session.ip + " with data " + JSON.stringify(req.data));
+    req.io.room(req.session.roomName).broadcast('heatmap:visible', req.data);
+    
+    mousemovesCollection.find({},{
+    		limit:1000, 
+    		sort: [['timestamp',-1]]
+    	},
+    	function(err, docs) {
+    	if(err) {
+			console.error("Failed to find mousemoves");
+			console.error(err);
+			return;
+		}
+		
+		var allHeatmapData = {
+			max: 20,
+			data: []
+    	};
+    	
+    	for(var i in docs) {
+    		allHeatmapData.data.push({
+    			x: docs[i].point.x, 
+    			y: docs[i].point.y, 
+    			count: 1
+    		});
+    	}
+		
+		app.io.room(req.session.roomName).broadcast('heatmap:setData', allHeatmapData);
+    });
 });
 
 // Start our server on port 80 (http is 80, https is 443)
@@ -171,5 +171,41 @@ console.log("Listening on port 80");
 
 
 	
+	
+// DEBUG - uncomment to erase your database
+/*
+votesCollection.drop(function(err) {
+	if(err) console.error(err)
+});
+mousemovesCollection.drop(function(err) {
+	if(err) console.error(err)
+});
+hoversCollection.drop(function(err) {
+	if(err) console.error(err)
+});
+console.log("Mongo collections dropped!");
+process.exit(-1);
+*/
+
+// Make sure Mongo adds indexes on fields to make our queries faster
+votesCollection.index('session.ip', { unique: true }, function(err) {
+	if(err) console.error(err)
+});
+votesCollection.index('option', { unique: true }, function(err) {
+	if(err) console.error(err)
+});
+mousemovesCollection.index('timestamp', function(err) {
+	if(err) console.error(err)
+});
+mousemovesCollection.index('session.id timestamp', function(err) {
+	if(err) console.error(err)
+});
+mousemovesCollection.index('session.ip timestamp', function(err) {
+	if(err) console.error(err)
+});
+hoversCollection.index('option', function(err) {
+	if(err) console.error(err)
+});
+
 
 

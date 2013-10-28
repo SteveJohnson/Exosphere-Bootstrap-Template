@@ -139,6 +139,11 @@ $(function() {
 			socket.emit('mousemove', {
 				point: point
 			});
+		},
+		toggleDislayCallback: function(visible) {
+			if(window.location.host == 'localhost') {
+				socket.emit('heatmap:visible', visible);
+			}
 		}
 	});
 
@@ -147,16 +152,28 @@ $(function() {
 		console.log(data);
 	});
 	
+	// Listen for heatmap events from the master client
+	socket.on('heatmap:visible', function(visible) {
+		console.log("Received heatmap:visible event with visible=" + visible);
+		exoHeatmap.setVisible(visible);
+	});
+	socket.on('heatmap:setData', function(data) {
+		console.log("Received heatmap:setData event");
+		exoHeatmap.setData(data);
+	});
+	socket.on('heatmap:mousemove', function (point) {
+		console.log("Received heatmap:mousemove event with point=" + JSON.stringify(point));
+		// Draw the other client's mousemove on our local heatmap
+		exoHeatmap.addPoint(point);
+	});
+	
 	// Listen for the alert event from the server
 	socket.on('alert', function(data) {
 		alert(data.msg);
 	});
 
 	// Listen for mousemove event from other clients
-	socket.on('mousemove', function (point) {
-		// Draw the other client's mousemove on our local heatmap
-		exoHeatmap.addPoint(point);
-	});
+
 	
 	// Tell the server we're ready
 	socket.emit('ready');
