@@ -33,10 +33,10 @@ A starter web template using:
 - Go into the repo directory: ```cd Exosphere-Bootstrap-Template```
 - Install any required node modules as detailed in the package.json file
 
-  - ([Forever](https://github.com/nodejitsu/forever), 
-  - [Express.Io](https://github.com/techpines/express.io) (a combination of [Express](http://expressjs.com/) and [Socket.Io](https://github.com/LearnBoost/socket.io), 
-  - [MongoDB](http://www.mongodb.org/),
-  - [Monk](https://github.com/LearnBoost/monk)) 
+  - [Forever](https://github.com/nodejitsu/forever)
+  - [Express.Io](https://github.com/techpines/express.io) (a combination of [Express](http://expressjs.com/) and [Socket.Io](https://github.com/LearnBoost/socket.io)
+  - [MongoDB](http://www.mongodb.org/)
+  - [Monk](https://github.com/LearnBoost/monk)
 
    ```npm install```
 
@@ -76,5 +76,5 @@ A starter web template using:
 
 ### Additional Notes ###
 
-- lib/bootstrap is a Git submodule of https://github.com/twbs/bootstrap
+- lib/bootstrap is a Git submodule of https://github.com/twbs/bootstrap - download it with ```git submodule init && git submodule update```
 - assets/ contains the contents of lib/bootstrap/dist and lib/bootstrap/js
