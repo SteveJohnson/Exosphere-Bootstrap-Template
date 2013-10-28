@@ -32,7 +32,10 @@
 
 	<div class="row">
 	
-		<div class="col-xs-6 col-sm-4 col-md-4 pollOption">
+		<div class="col-xs-6 col-sm-4 col-md-4 pollOption"
+			data-content="some popover content"
+			rel="popover"
+			>
 			<div class="thumbnail">
 				<div class="caption">
 					<h3>Option A</h3>
@@ -66,10 +69,40 @@
 					</p>
 				</div>
 			</div>
-			
 		</div>
 		
 	</div>
+	
+	<div class="row">
+	
+		<div class="col-xs-8 col-sm-6 col-md-6 pollOption">
+			<div class="thumbnail">
+				<div class="caption">
+					<h3>Option D</h3>
+					<p>Hover for more info</p>
+					<p>
+						<a href="#" class="btn btn-primary vote">Vote!</a>
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-xs-8 col-sm-6 col-md-6 pollOption">
+			<div class="thumbnail">
+				<div class="caption">
+					<h3>Option E</h3>
+					<p>Hover for more info</p>
+					<p>
+						<a href="#" class="btn btn-primary vote">Vote!</a>
+					</p>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	
+	
+	
 </div>
 
 
@@ -78,14 +111,12 @@
 
 <!-- Placed at the end of the document so the pages load faster -->
 <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
-<script src="/assets/bootstrap/js/jquery.min.js">
-</script>
-<script src="/assets/bootstrap/js/heatmap.js">
-</script>
-<script src="/assets/custom/js/ExoHeatmap.js">
-</script>
-<script src="/socket.io/socket.io.js">
-</script>
+<script src="/assets/bootstrap/js/jquery.min.js"></script>
+<script src="/assets/bootstrap/js/heatmap.js"></script>
+<script src="/assets/bootstrap/js/tooltip.js"></script>
+<script src="/assets/bootstrap/js/popover.js"></script>
+<script src="/assets/custom/js/ExoHeatmap.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
 
 
@@ -94,6 +125,14 @@ $(function() {
 
 	// Connect to the server
 	var socket = io.connect(window.location.host);
+	
+	// Add our popups to the poll options
+	$('.pollOption').popover({
+		animation: true,
+		trigger: 'hover',
+		placement: 'top',
+		
+	});
 	
 	// Store the current time in milliseconds when the mouse starts hovering over an option
 	$('.pollOption').mouseenter(function() { 
@@ -152,7 +191,7 @@ $(function() {
 		console.log(data);
 	});
 	
-	// Listen for heatmap events from the master client
+	// Listen for heatmap events from other clients
 	socket.on('heatmap:visible', function(visible) {
 		console.log("Received heatmap:visible event with visible=" + visible);
 		exoHeatmap.setVisible(visible);
@@ -171,8 +210,6 @@ $(function() {
 	socket.on('alert', function(data) {
 		alert(data.msg);
 	});
-
-	// Listen for mousemove event from other clients
 
 	
 	// Tell the server we're ready

@@ -30,7 +30,7 @@ function ExoHeatmap(opts) {
 			element: heatmapEl[0],
 			radius: 20,
 			opacity: 30,
-			max: 100,
+			max: 20,
 			visible: false,
 			gradient: { 
 				0.45: "rgb(0,0,255)", 
