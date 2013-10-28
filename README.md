@@ -14,8 +14,14 @@ A starter web template using:
   - Windows
     1. Download and install: http://msysgit.github.com/
   - OSX
-    1. Install MacPorts: http://www.macports.org/install.php
-    2. ```sudo port install git-core +svn +doc +bash_completion +gitweb```
+    1. (IF you do not have XCode) Install OSX Compilers: 
+       1. No Apple Account: 
+          https://github.com/kennethreitz/osx-gcc-installer
+          Download and install the pkg under Option 1 for your OS
+       2. Apple Account:
+          http://developer.apple.com/downloads
+    2. Install MacPorts: http://www.macports.org/install.php
+    3. ```sudo port install git-core +svn +doc +bash_completion +gitweb```
 2. Install Node.js
   - Windows
     1. Download and install: http://nodejs.org/download/
