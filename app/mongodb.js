@@ -24,6 +24,17 @@ app.io.route('ready', function(req) {
 app.io.route('mousemove', function(req) {
 	//console.log("Received mousemove event from " + req.session.ip + " with data " + JSON.stringify(req.data));
     req.io.room(req.session.roomName).broadcast('mousemove', req.data)
+    
+    //TODO: write to Mongo
+});
+
+// Receive votes!
+app.io.route('vote', function(req) {
+	console.log("Received vote event from " + req.session.ip + " with data " + JSON.stringify(req.data));
+
+	//TODO: respond with failure if already voted
+
+    //TODO: write to Mongo
 });
 
 // Log when someone connects

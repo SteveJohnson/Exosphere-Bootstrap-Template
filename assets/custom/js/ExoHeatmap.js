@@ -12,14 +12,16 @@ function ExoHeatmap(opts) {
 	};
 	var isSampling = false;
 	var heatmap = null;
+	var heatmapEl = null;
 	
 	var me = this;
 	
 	this._init = function() {
 
 		// Extend the heatmap element to full size of the browser window
-		var heatmapEl = $("<div id='heatmapArea' style='position:absolute;top:0px;left:0px;'></div>");
-		$('body').append(heatmapEl);
+		heatmapEl = $('body');
+		//heatmapEl = $("<div id='heatmapArea' style='position:absolute;top:0px;left:0px;'></div>");
+		//$('body').append(heatmapEl);
 		heatmapEl.css('width', $(document).width());
 		heatmapEl.css('height', $(document).height());
 	
@@ -90,10 +92,14 @@ function ExoHeatmap(opts) {
 	
 		// Add a secret corner for enabling the heatmap --- oOooOooo
 		$('body').append($("<div id='toggleHeatmap' style='width:200px;height:200px;position:fixed;bottom:0px;right:0px'></div>"));
-		$('#toggleHeatmap').css('z-index', $('canvas', heatmapEl).css('z-index')+1)
+		$('body').children().not(heatmapEl).css('z-index', $('canvas', heatmapEl).css('z-index')+1);
 		$('#toggleHeatmap').click(function() {
 			heatmap.toggleDisplay();
 		});
+	};
+	
+	this.getElement = function() {
+		return heatmapEl;
 	};
 	
 	this.addPoint = function(point) {
