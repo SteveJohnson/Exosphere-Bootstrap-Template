@@ -1,13 +1,35 @@
 Exosphere-Bootstrap-Template
 ============================
 
-A starter template using Twitter Bootstrap, Node.js, and Express
+A starter web template using:
+- [Node.js](http://nodejs.org/) - "a platform built for easily building fast, scalable network applications"
+- [Bootstrap](http://getbootstrap.com/) - "front-end framework for faster and easier web development"
+- [MongoDB](http://www.mongodb.org/) - "the leading NoSQL document database"
 
-Anything that ```looks like this``` is a command you should run in your console (Terminal on OSX)
+### Getting Started ###
 
-### Getting Started (A Simple Static Website) ###
+##### Anything that ```looks like this``` is a command you should run in your console (Terminal on OSX) #####
 
-- Check out this repo: ```git clone https://github.com/SteveJohnson/Exosphere-Bootstrap-Template```
+1. Install Git
+  - Windows
+    1. Download and install: http://msysgit.github.com/
+  - OSX
+    1. Install MacPorts: http://www.macports.org/install.php
+    2. ```sudo port install git-core +svn +doc +bash_completion +gitweb```
+2. Install Node.js
+  - Windows
+    1. Download and install: http://nodejs.org/download/
+  - OSX
+    1. ```sudo port install nodejs```
+3. Install MongoDB
+  - Windows
+    1. Download and install: http://www.mongodb.org/downloads
+  - OSX
+    1. ```sudo port install mongodb```
+4. Check out this repo: ```git clone https://github.com/SteveJohnson/Exosphere-Bootstrap-Template```
+
+### A Simple Static Website ###
+
 - Go into the repo directory: ```cd Exosphere-Bootstrap-Template```
 - Install any required node modules as detailed in the package.json file
 
