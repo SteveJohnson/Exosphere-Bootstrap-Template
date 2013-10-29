@@ -184,7 +184,7 @@ hoversCollection.drop(function(err) {
 	if(err) console.error(err)
 });
 console.log("Mongo collections dropped!");
-process.exit(-1);
+//process.exit(-1);
 */
 
 // Make sure Mongo adds indexes on fields to make our queries faster

@@ -4,7 +4,7 @@ var child = require('./lib/ExoForever.js')(__filename);
 if(child) { return; }
 
 // Load the "express" module
-var express = require("express");
+var express = require("express.io");
 
 // Get an instance of express to build our app with
 var app = express();
