@@ -11,7 +11,7 @@ A starter web template using:
 
 ## Jumpstart Template ##
 
-Download: [Template.zip](https://github.com/SteveJohnson/Exosphere-Bootstrap-Template/tree/master/template.zip)
+Download: [Template.zip](https://github.com/SteveJohnson/Exosphere-Bootstrap-Template/raw/master/template.zip)
 
 
 
