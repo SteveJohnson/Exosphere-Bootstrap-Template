@@ -6,6 +6,19 @@ A starter web template using:
 - [Bootstrap](http://getbootstrap.com/) - "front-end framework for faster and easier web development"
 - [MongoDB](http://www.mongodb.org/) - "the leading NoSQL document database"
 
+
+
+
+## Jumpstart Template ##
+
+Download: [Template.zip](https://github.com/SteveJohnson/Exosphere-Bootstrap-Template/tree/master/template.zip)
+
+
+
+
+
+
+
 ### Getting Started ###
 
 ##### Anything that ```looks like this``` is a command you should run in your console (Terminal on OSX) #####
